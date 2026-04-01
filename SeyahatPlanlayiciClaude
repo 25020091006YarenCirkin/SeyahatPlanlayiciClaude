@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeziBuddy - Seyahat Planlayıcı</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-plane-departure"></i>
+                GeziBuddy
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero" class="active"><i class="fas fa-home"></i> Ana Sayfa</a></li>
+                <li><a href="#planner"><i class="fas fa-calendar-alt"></i> Planlayıcı</a></li>
+                <li><a href="#calendar-section"><i class="fas fa-calendar"></i> Takvim</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> İletişim</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <h1>Hayalinizdeki Seyahati Planlayın</h1>
+            <p>Türkiye'nin en kullanışlı seyahat planlama aracıyla unutulmaz anılar biriktirin</p>
+            <a href="#planner" class="cta-btn">
+                <i class="fas fa-rocket"></i> Hemen Başla
+            </a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <i class="fas fa-map-marked-alt"></i>
+                <span class="stat-number" id="totalPlans">0</span>
+                <span class="stat-label">Toplam Plan</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-clock"></i>
+                <span class="stat-number" id="upcomingCount">0</span>
+                <span class="stat-label">Yaklaşan Seyahat</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-check-circle"></i>
+                <span class="stat-number" id="completedCount">0</span>
+                <span class="stat-label">Tamamlanan</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Planner Section -->
+    <section id="planner" class="planner-section">
+        <div class="section-header">
+            <h2><i class="fas fa-suitcase-rolling"></i> Seyahat Planlayıcı</h2>
+            <p>Yeni bir macera ekleyin veya mevcut planlarınızı yönetin</p>
+        </div>
+
+        <!-- Add/Edit Form -->
+        <div class="form-container">
+            <h3 id="formTitle"><i class="fas fa-plus-circle"></i> Yeni Seyahat Planı</h3>
+            <form id="travelForm">
+                <input type="hidden" id="editId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="title"><i class="fas fa-heading"></i> Seyahat Başlığı</label>
+                        <input type="text" id="title" placeholder="Örn: Kapadokya Macerası" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location"><i class="fas fa-map-marker-alt"></i> Konum</label>
+                        <input type="text" id="location" placeholder="Örn: Nevşehir, Türkiye" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startDate"><i class="fas fa-calendar-plus"></i> Başlangıç Tarihi</label>
+                        <input type="date" id="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate"><i class="fas fa-calendar-check"></i> Bitiş Tarihi</label>
+                        <input type="date" id="endDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="category"><i class="fas fa-tag"></i> Kategori</label>
+                    <select id="category">
+                        <option value="tatil">🏖️ Tatil</option>
+                        <option value="is">💼 İş Seyahati</option>
+                        <option value="kultur">🏛️ Kültür Turu</option>
+                        <option value="macera">🏔️ Macera</option>
+                        <option value="romantik">💕 Romantik Kaçamak</option>
+                        <option value="aile">👨‍👩‍👧‍👦 Aile Gezisi</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="notes"><i class="fas fa-sticky-note"></i> Notlar</label>
+                    <textarea id="notes" placeholder="Seyahat detayları, yapılacaklar listesi, önemli bilgiler..." rows="4"></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <i class="fas fa-save"></i> Planı Kaydet
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="cancelBtn" style="display: none;">
+                        <i class="fas fa-times"></i> İptal
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-container">
+            <h3><i class="fas fa-filter"></i> Planları Filtrele</h3>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label><i class="fas fa-calendar"></i> Tarih Aralığı</label>
+                    <div class="date-range">
+                        <input type="date" id="filterStartDate" placeholder="Başlangıç">
+                        <span>-</span>
+                        <input type="date" id="filterEndDate" placeholder="Bitiş">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-tag"></i> Kategori</label>
+                    <select id="filterCategory">
+                        <option value="all">Tümü</option>
+                        <option value="tatil">🏖️ Tatil</option>
+                        <option value="is">💼 İş Seyahati</option>
+                        <option value="kultur">🏛️ Kültür Turu</option>
+                        <option value="macera">🏔️ Macera</option>
+                        <option value="romantik">💕 Romantik Kaçamak</option>
+                        <option value="aile">👨‍👩‍👧‍👦 Aile Gezisi</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-sort"></i> Durum</label>
+                    <select id="filterStatus">
+                        <option value="all">Tümü</option>
+                        <option value="upcoming">Yaklaşan</option>
+                        <option value="ongoing">Devam Eden</option>
+                        <option value="completed">Tamamlanan</option>
+                    </select>
+                </div>
+                <button class="btn btn-filter" id="clearFilters">
+                    <i class="fas fa-eraser"></i> Filtreleri Temizle
+                </button>
+            </div>
+        </div>
+
+        <!-- Plans Grid -->
+        <div class="plans-container">
+            <h3><i class="fas fa-list"></i> Seyahat Planlarınız <span id="planCount">(0)</span></h3>
+            <div class="plans-grid" id="plansGrid">
+                <!-- Plans will be inserted here -->
+            </div>
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-compass"></i>
+                <h4>Henüz seyahat planınız yok</h4>
+                <p>Yukarıdaki formu kullanarak ilk seyahat planınızı oluşturun!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calendar Section -->
+    <section id="calendar-section" class="calendar-section">
+        <div class="section-header">
+            <h2><i class="fas fa-calendar-alt"></i> Seyahat Takvimi</h2>
+            <p>Planlarınızı takvim görünümünde inceleyin</p>
+        </div>
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button class="cal-nav-btn" id="prevMonth">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <h3 id="currentMonth">Ocak 2024</h3>
+                <button class="cal-nav-btn" id="nextMonth">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="calendar-weekdays">
+                <span>Pzt</span>
+                <span>Sal</span>
+                <span>Çar</span>
+                <span>Per</span>
+                <span>Cum</span>
+                <span>Cmt</span>
+                <span>Paz</span>
+            </div>
+            <div class="calendar-days" id="calendarDays">
+                <!-- Calendar days will be inserted here -->
+            </div>
+        </div>
+        <div class="calendar-legend">
+            <div class="legend-item">
+                <span class="legend-dot upcoming"></span> Yaklaşan Seyahat
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot ongoing"></span> Devam Eden
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot completed"></span> Tamamlanan
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="section-header">
+            <h2><i class="fas fa-envelope"></i> İletişim</h2>
+            <p>Sorularınız için bize ulaşın</p>
+        </div>
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h4>Adres</h4>
+                        <p>İstanbul, Türkiye</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h4>Telefon</h4>
+                        <p>+90 (212) 555 00 00</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4>E-posta</h4>
+                        <p>info@gezibuddy.com</p>
+                    </div>
+                </div>
+            </div>
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <input type="text" placeholder="Adınız Soyadınız" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="E-posta Adresiniz" required>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Mesajınız..." rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Gönder
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3><i class="fas fa-plane-departure"></i> GeziBuddy</h3>
+                <p>Hayallerinizdeki seyahati planlamanın en kolay yolu</p>
+            </div>
+            <div class="footer-links">
+                <h4>Hızlı Bağlantılar</h4>
+                <a href="#hero">Ana Sayfa</a>
+                <a href="#planner">Planlayıcı</a>
+                <a href="#calendar-section">Takvim</a>
+                <a href="#contact">İletişim</a>
+            </div>
+            <div class="footer-social">
+                <h4>Bizi Takip Edin</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 GeziBuddy. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">İşlem başarılı!</span>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>Planı Sil</h3>
+            <p>Bu seyahat planını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.</p>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" id="cancelDelete">İptal</button>
+                <button class="btn btn-danger" id="confirmDelete">Evet, Sil</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
